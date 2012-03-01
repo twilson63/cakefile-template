@@ -6,12 +6,9 @@ Cakefile and put it in your project.
 
 # Install
 
-```
-npm install get-post -g
-
-# nav to your project folder
-
-get https://raw.github.com/twilson63/cakefile-template/master/Cakefile >> Cakefile
+```bash
+# In your project directory...
+curl https://raw.github.com/twilson63/cakefile-template/master/Cakefile >> Cakefile
 
 ```
 # Usage
@@ -21,7 +18,7 @@ get https://raw.github.com/twilson63/cakefile-template/master/Cakefile >> Cakefi
 Put all of your coffee-script in the src folder, it will compile all coffee-script
 in your lib folder, using the build command.
 
-```
+```bash
 cake build
 ```
 
@@ -29,7 +26,7 @@ cake build
 
 If you want to compile as you write your code, invoke the watch command.
 
-```
+```bash
 cake watch
 ```
 
@@ -37,13 +34,13 @@ cake watch
 
 If you want to run your spec tests, assuming you are using jasmine-node.
 
-```
+```bash
 cake spec
 ```
 
 ## Documenting
 
-```
+```bash
 cake docs
 ```
 
