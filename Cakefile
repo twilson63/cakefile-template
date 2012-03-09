@@ -15,7 +15,7 @@ build = (watch, callback) ->
   if typeof watch is 'function'
     callback = watch
     watch = false
-  options = ['-c', '-o', 'lib', 'src']
+  options = ['-c', '-o', '-b', 'lib', 'src']
   options.unshift '-w' if watch
 
   coffee = spawn 'coffee', options
@@ -23,12 +23,12 @@ build = (watch, callback) ->
   coffee.stderr.on 'data', (data) -> log data.toString(), red
   coffee.on 'exit', (status) -> callback?() if status is 0
 
-spec = (callback) ->
-  options = ['spec', '--coffee']
-  spec = spawn 'jasmine-node', options
-  spec.stdout.on 'data', (data) -> print data.toString()
-  spec.stderr.on 'data', (data) -> log data.toString(), red
-  spec.on 'exit', (status) -> callback?() if status is 0
+test = (callback) ->
+  options = []
+  test = spawn 'mocha', options
+  test.stdout.on 'data', (data) -> print data.toString()
+  test.stderr.on 'data', (data) -> log data.toString(), red
+  test.on 'exit', (status) -> callback?() if status is 0
 
 
 task 'docs', 'Generate annotated source code with Docco', ->
@@ -43,5 +43,8 @@ task 'docs', 'Generate annotated source code with Docco', ->
 task 'build', ->
   build -> log ":)", green
 
-task 'spec', 'Run Jasmine-Node', ->
-  build -> spec -> log ":)", green
+task 'watch', ->
+  build true, -> log ":-)", green
+
+task 'spec', 'Mocha Tests', ->
+  build -> test -> log ":)", green
