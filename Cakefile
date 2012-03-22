@@ -86,7 +86,10 @@ build = (watch, callback) ->
 # **and** optional function as callback
 # **then** invoke launch passing mocha command
 mocha = (options, callback) ->
-  callback = options if typeof options is 'function'
+  if typeof options is 'function'
+    callback = options 
+    options = []
+    
   launch 'mocha', options, callback
 
 # ## *docco*
