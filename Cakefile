@@ -141,6 +141,6 @@ task 'watch', 'compile and watch', -> build true, -> log ":-)", green
 # <small>Usage</small>
 #
 # ```
-# cake docs
+# cake test
 # ```
 task 'test', 'run tests', -> build -> mocha -> log ":)", green
