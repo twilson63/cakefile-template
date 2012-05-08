@@ -9,6 +9,7 @@
 fs = require 'fs'
 {print} = require 'util'
 {spawn, exec} = require 'child_process'
+which = require('which').sync
 
 # ANSI Terminal Colors
 bold = '\033[0;1m'
@@ -31,12 +32,12 @@ walk = (dir, done) ->
     return done(null, results) unless pending
     for name in list
       file = "#{dir}/#{name}"
-      try 
-        stat = fs.statSync file 
-      catch err 
+      try
+        stat = fs.statSync file
+      catch err
         stat = null
       if stat?.isDirectory()
-        walk file, (err, res) -> 
+        walk file, (err, res) ->
           results.push name for name in res
           done(null, results) unless --pending
       else
@@ -60,6 +61,7 @@ log = (message, color, explanation) -> console.log color + message + reset + ' '
 # **and** pipe to process stdout and stderr respectively
 # **and** on child process exit emit callback if set and status is 0
 launch = (cmd, options=[], callback) ->
+  cmd = which(cmd)
   app = spawn cmd, options
   app.stdout.pipe(process.stdout)
   app.stderr.pipe(process.stderr)
@@ -87,7 +89,7 @@ build = (watch, callback) ->
 # **then** invoke launch passing mocha command
 mocha = (options, callback) ->
   if typeof options is 'function'
-    callback = options 
+    callback = options
     options = []
     
   launch 'mocha', options, callback
