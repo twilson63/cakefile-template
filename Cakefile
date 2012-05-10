@@ -9,7 +9,7 @@
 fs = require 'fs'
 {print} = require 'util'
 {spawn, exec} = require 'child_process'
-which = require('which').sync
+#which = require('which').sync
 
 # ANSI Terminal Colors
 bold = '\033[0;1m'
@@ -61,7 +61,7 @@ log = (message, color, explanation) -> console.log color + message + reset + ' '
 # **and** pipe to process stdout and stderr respectively
 # **and** on child process exit emit callback if set and status is 0
 launch = (cmd, options=[], callback) ->
-  cmd = which(cmd)
+  #cmd = which(cmd)
   app = spawn cmd, options
   app.stdout.pipe(process.stdout)
   app.stderr.pipe(process.stderr)
