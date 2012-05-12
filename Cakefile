@@ -12,7 +12,7 @@ fs = require 'fs'
 
 try
   which = require('which').sync
-catch (err)
+catch err
   which = null
 
 # ANSI Terminal Colors
