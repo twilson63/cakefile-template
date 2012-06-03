@@ -16,10 +16,10 @@ catch err
   which = null
 
 # ANSI Terminal Colors
-bold = '\033[0;1m'
-green = '\033[0;32m'
-reset = '\033[0m'
-red = '\033[0;31m'
+bold = `'\033[0;1m'`
+green = `'\033[0;32m'`
+reset = `'\033[0m'`
+red = `'\033[0;31m'`
 
 # Internal Functions
 #
