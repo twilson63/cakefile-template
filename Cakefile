@@ -6,6 +6,11 @@
 # * watch - watches any changes in your src directory and automatically compiles to the lib directory
 # * test  - runs mocha test framework, you can edit this task to use your favorite test framework
 # * docs  - generates annotated documentation using docco
+files = [
+  'src'
+  'lib'
+  ]
+
 fs = require 'fs'
 {print} = require 'util'
 {spawn, exec} = require 'child_process'
@@ -82,9 +87,38 @@ build = (watch, callback) ->
     callback = watch
     watch = false
 
-  options = ['-c', '-b', '-o', 'lib', 'src']
+  options = ['-c', '-b', '-o' ]
+  options.push files
   options.unshift '-w' if watch
   launch 'coffee', options, callback
+
+# ## *unlinkIfCoffeeFile*
+#
+# **given** string as file
+# **and** file ends in '.coffee'
+# **then** convert '.coffee' to '.js'
+# **and** remove the result
+unlinkIfCoffeeFile = (file) ->
+  if file.match /\.coffee$/
+    fs.unlink file.replace(/\.coffee$/, '.js')
+    true
+  else false
+
+# ## *clean*
+#
+# **given** optional function as callback
+# **then** loop through files variable
+# **and** call unlinkIfCoffeeFile on each
+clean = (callback) ->
+  try
+    for file in files
+      unless unlinkIfCoffeeFile file
+        walk file, (err, results) ->
+          for f in results
+            unlinkIfCoffeeFile f
+
+    callback?()
+  catch err
 
 # ## *mocha*
 #
@@ -150,3 +184,14 @@ task 'watch', 'compile and watch', -> build true, -> log ":-)", green
 # cake test
 # ```
 task 'test', 'run tests', -> build -> mocha -> log ":)", green
+
+# ## *clean*
+#
+# Cleans up generated js files
+#
+# <small>Ussage</small>
+#
+# ```
+# cake clean
+# ```
+task 'clean', 'clean generated files', -> clean -> log ";)", green
