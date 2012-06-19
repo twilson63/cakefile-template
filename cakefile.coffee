@@ -8,9 +8,9 @@
 # * docs  - generates annotated documentation using docco
 # * clean - clean generated .js files
 files = [
-  'lib'
   'src'
-]
+  'lib'
+  ]
 
 fs = require 'fs'
 {print} = require 'util'
@@ -26,64 +26,6 @@ bold = '\x1b[0;1m'
 green = '\x1b[0;32m'
 reset = '\x1b[0m'
 red = '\x1b[0;31m'
-
-# Cakefile Tasks
-#
-# ## *docs*
-#
-# Generate Annotated Documentation
-#
-# <small>Usage</small>
-#
-# ```
-# cake docs
-# ```
-task 'docs', 'generate documentation', -> docco()
-
-# ## *build*
-#
-# Builds Source
-#
-# <small>Usage</small>
-#
-# ```
-# cake build
-# ```
-task 'build', 'compile source', -> build -> log ":)", green
-
-# ## *watch*
-#
-# Builds your source whenever it changes
-#
-# <small>Usage</small>
-#
-# ```
-# cake watch
-# ```
-task 'watch', 'compile and watch', -> build true, -> log ":-)", green
-
-# ## *test*
-#
-# Runs your test suite.
-#
-# <small>Usage</small>
-#
-# ```
-# cake test
-# ```
-task 'test', 'run tests', -> build -> mocha -> log ":)", green
-
-# ## *clean*
-#
-# Cleans up generated js files
-#
-# <small>Ussage</small>
-#
-# ```
-# cake clean
-# ```
-task 'clean', 'clean generated files', -> clean -> log ";)", green
-
 
 # Internal Functions
 #
@@ -200,18 +142,74 @@ moduleExists = (name) ->
 # **and** optional function as callback
 # **then** invoke launch passing mocha command
 mocha = (options, callback) ->
-  #if moduleExists('mocha')
-  if typeof options is 'function'
-    callback = options
-    options = []
-  
-  launch 'mocha', options, callback
+  if moduleExists('mocha')
+    if typeof options is 'function'
+      callback = options
+      options = []
+    
+    launch 'mocha', options, callback
 
 # ## *docco*
 #
 # **given** optional function as callback
 # **then** invoke launch passing docco command
 docco = (callback) ->
-  #if moduleExists('docco')
-  walk 'src', (err, files) -> launch 'docco', files, callback
+  if moduleExists('docco')
+    walk 'src', (err, files) -> launch 'docco', files, callback
 
+# Cakefile Tasks
+#
+# ## *docs*
+#
+# Generate Annotated Documentation
+#
+# <small>Usage</small>
+#
+# ```
+# cake docs
+# ```
+task 'docs', 'generate documentation', -> docco()
+
+# ## *build*
+#
+# Builds Source
+#
+# <small>Usage</small>
+#
+# ```
+# cake build
+# ```
+task 'build', 'compile source', -> build -> log ":)", green
+
+# ## *watch*
+#
+# Builds your source whenever it changes
+#
+# <small>Usage</small>
+#
+# ```
+# cake watch
+# ```
+task 'watch', 'compile and watch', -> build true, -> log ":-)", green
+
+# ## *test*
+#
+# Runs your test suite.
+#
+# <small>Usage</small>
+#
+# ```
+# cake test
+# ```
+task 'test', 'run tests', -> build -> mocha -> log ":)", green
+
+# ## *clean*
+#
+# Cleans up generated js files
+#
+# <small>Ussage</small>
+#
+# ```
+# cake clean
+# ```
+task 'clean', 'clean generated files', -> clean -> log ";)", green
