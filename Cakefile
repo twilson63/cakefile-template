@@ -88,7 +88,7 @@ build = (watch, callback) ->
     watch = false
 
   options = ['-c', '-b', '-o' ]
-  options.push files
+  options = options.concat files
   options.unshift '-w' if watch
   launch 'coffee', options, callback
 
