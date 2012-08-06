@@ -19,6 +19,8 @@ fs = require 'fs'
 try
   which = require('which').sync
 catch err
+  if process.platform.match(/^win/)?
+    console.log 'WARNING: the which module is required for windows'
   which = null
 
 # ANSI Terminal Colors
