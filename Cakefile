@@ -20,7 +20,7 @@ try
   which = require('which').sync
 catch err
   if process.platform.match(/^win/)?
-    console.log 'WARNING: the which module is required for windows'
+    console.log 'WARNING: the which module is required for windows\ntry: npm install which'
   which = null
 
 # ANSI Terminal Colors
