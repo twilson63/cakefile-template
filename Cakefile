@@ -23,6 +23,12 @@ red = '\033[0;31m'
 # **given** string as dir which represents a directory in relation to local directory
 # **and** callback as done in the form of (err, results)
 # **then** recurse through directory returning an array of files
+#
+# Examples
+#
+# ``` coffeescript
+# walk 'src', (err, results) -> console.log results
+# ```
 walk = (dir, done) ->
   results = []
   fs.readdir dir, (err, list) ->
@@ -49,6 +55,7 @@ walk = (dir, done) ->
 # **and** string as a color
 # **and** optional string as an explaination
 # **then** builds a statement and logs to console.
+# 
 log = (message, color, explanation) -> console.log color + message + reset + ' ' + (explanation or '')
 
 # ## *launch*
@@ -87,6 +94,9 @@ build = (watch, callback) ->
 # **then** invoke launch passing mocha command
 mocha = (options, callback) ->
   callback = options if typeof options is 'function'
+  # add coffee compiler directive by default
+  options.push '--coffee'
+  options.push 'coffee:coffee-script'
   launch 'mocha', options, callback
 
 # ## *docco*
