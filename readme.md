@@ -32,10 +32,10 @@ cake watch
 
 ## Testing
 
-If you want to run your spec tests, assuming you are using jasmine-node.
+If you want to run your tests, assuming you are using mocha.
 
 ```bash
-cake spec
+cake test
 ```
 
 ## Documenting
