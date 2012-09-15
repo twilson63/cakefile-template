@@ -79,7 +79,7 @@ task 'test', 'run tests', -> build -> mocha -> log ":)", green
 #
 # Cleans up generated js files
 #
-# <small>Ussage</small>
+# <small>Usage</small>
 #
 # ```
 # cake clean
@@ -124,7 +124,7 @@ walk = (dir, done) ->
 # 
 # **given** string as a message
 # **and** string as a color
-# **and** optional string as an explaination
+# **and** optional string as an explanation
 # **then** builds a statement and logs to console.
 # 
 log = (message, color, explanation) -> console.log color + message + reset + ' ' + (explanation or '')
