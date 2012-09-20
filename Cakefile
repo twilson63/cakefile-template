@@ -214,7 +214,7 @@ mocha = (options, callback) ->
     callback = options
     options = []
   # add coffee directive
-  options.push '--coffee'
+  options.push '--compilers'
   options.push 'coffee:coffee-script'
   
   launch 'mocha', options, callback
