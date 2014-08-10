@@ -9,6 +9,8 @@ Cakefile and put it in your project.
 ```bash
 # In your project directory...
 curl https://raw.github.com/twilson63/cakefile-template/master/Cakefile >> Cakefile
+## If that does not work... try
+curl https://raw.githubusercontent.com/twilson63/cakefile-template/master/Cakefile >> Cakefile
 
 ```
 # Usage
