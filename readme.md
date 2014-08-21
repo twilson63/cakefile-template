@@ -46,4 +46,16 @@ cake test
 cake docs
 ```
 
+## Options ##
+If you want to generate HTML5 maps when compiling (watching), add 'm' before `compile` or `watch`:
+
+```bash
+cake -m compile
+```
+
+`clean` will also take care of mapping files. 
+
+More information about mapping can be found on [HTML5rocks](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/) or [Coffeescript.org](http://coffeescript.org/#source-maps).
+
+
 Have Fun! 
