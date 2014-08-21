@@ -29,6 +29,9 @@ green = '\x1b[0;32m'
 reset = '\x1b[0m'
 red = '\x1b[0;31m'
 
+option "-m", "--map", "generate source map and save as .map files"
+
+
 # Cakefile Tasks
 #
 # ## *docs*
@@ -51,7 +54,8 @@ task 'docs', 'generate documentation', -> docco()
 # ```
 # cake build
 # ```
-task 'build', 'compile source', -> build -> log ":)", green
+task 'build', 'compile source', (options) -> 
+  build false, (-> log ":-)", green), useMapping: useMapping = options.map
 
 # ## *watch*
 #
@@ -62,7 +66,8 @@ task 'build', 'compile source', -> build -> log ":)", green
 # ```
 # cake watch
 # ```
-task 'watch', 'compile and watch', -> build true, -> log ":-)", green
+task 'watch', 'compile and watch', (options) ->
+  build true, (-> log ":-)", green), useMapping: useMapping = options.map
 
 # ## *test*
 #
@@ -154,12 +159,16 @@ launch = (cmd, options=[], callback) ->
 # **and** optional function as callback
 # **then** invoke launch passing coffee command
 # **and** defaulted options to compile src to lib
-build = (watch, callback) ->
+build = (watch, callback, {useMapping} = {}) ->
+  useMapping ?= false
+  
   if typeof watch is 'function'
     callback = watch
     watch = false
-
-  options = ['-c', '-b', '-o' ]
+  
+  options = ['-c', '-b']
+  options.push("--map") if useMapping
+  options.push("-o")
   options = options.concat files
   options.unshift '-w' if watch
   launch 'coffee', options, callback
@@ -172,6 +181,7 @@ build = (watch, callback) ->
 # **and** remove the result
 unlinkIfCoffeeFile = (file) ->
   if file.match /\.coffee$/
+    fs.unlink file.replace('src','lib').replace(/\.coffee$/, '.map'), ->
     fs.unlink file.replace('src','lib').replace(/\.coffee$/, '.js'), ->
     true
   else false
