@@ -1,116 +1,103 @@
-<!DOCTYPE html>  <html> <head>   <title>cakefile.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               cakefile.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p><em>* Cakefile Template *</em> is a Template for a common Cakefile that you may use in a coffeescript nodejs project.</p>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Cakefile-template by twilson63</title>
 
-<p>It comes baked in with 4 tasks:</p>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-<ul>
-<li>build - compiles your src directory to your lib directory</li>
-<li>watch - watches any changes in your src directory and automatically compiles to the lib directory</li>
-<li>test  - runs mocha test framework, you can edit this task to use your favorite test framework</li>
-<li>docs  - generates annotated documentation using docco</li>
-</ul>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">fs = </span><span class="nx">require</span> <span class="s1">&#39;fs&#39;</span>
-<span class="p">{</span><span class="nx">print</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span> <span class="s1">&#39;util&#39;</span>
-<span class="p">{</span><span class="nx">spawn</span><span class="p">,</span> <span class="nx">exec</span><span class="p">}</span> <span class="o">=</span> <span class="nx">require</span> <span class="s1">&#39;child_process&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>ANSI Terminal Colors</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">bold = </span><span class="s1">&#39;\033[0;1m&#39;</span>
-<span class="nv">green = </span><span class="s1">&#39;\033[0;32m&#39;</span>
-<span class="nv">reset = </span><span class="s1">&#39;\033[0m&#39;</span>
-<span class="nv">red = </span><span class="s1">&#39;\033[0;31m&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Internal Functions</p>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Cakefile-template</h1>
+        <p>This is a cakefile template for coffeescript, docco and mocha</p>
+        <p class="view"><a href="https://github.com/twilson63/cakefile-template">View the Project on GitHub <small>twilson63/cakefile-template</small></a></p>
+        <ul>
+          <li><a href="https://github.com/twilson63/cakefile-template/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/twilson63/cakefile-template/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/twilson63/cakefile-template">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="cakefile-template" class="anchor" href="#cakefile-template"><span class="octicon octicon-link"></span></a>Cakefile Template</h1>
 
-<h2><em>walk</em></h2>
+<p>If you write a lot of coffeescript and get tired of 
+setting up your build, watch and spec tasks, grab this 
+Cakefile and put it in your project.</p>
 
-<p><strong>given</strong> string as dir which represents a directory in relation to local directory
-<strong>and</strong> callback as done in the form of (err, results)
-<strong>then</strong> recurse through directory returning an array of files</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">walk = </span><span class="nf">(dir, done) -&gt;</span>
-  <span class="nv">results = </span><span class="p">[]</span>
-  <span class="nx">fs</span><span class="p">.</span><span class="nx">readdir</span> <span class="nx">dir</span><span class="p">,</span> <span class="nf">(err, list) -&gt;</span>
-    <span class="k">return</span> <span class="nx">done</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="p">[])</span> <span class="k">if</span> <span class="nx">err</span>
-    <span class="nv">pending = </span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span>
-    <span class="k">return</span> <span class="nx">done</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="nx">unless</span> <span class="nx">pending</span>
-    <span class="k">for</span> <span class="nx">name</span> <span class="k">in</span> <span class="nx">list</span>
-      <span class="nv">file = </span><span class="s2">&quot;#{dir}/#{name}&quot;</span>
-      <span class="k">try</span> 
-        <span class="nv">stat = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span> <span class="nx">file</span> 
-      <span class="k">catch</span> <span class="nx">err</span> 
-        <span class="nv">stat = </span><span class="kc">null</span>
-      <span class="k">if</span> <span class="nx">stat</span><span class="o">?</span><span class="p">.</span><span class="nx">isDirectory</span><span class="p">()</span>
-        <span class="nx">walk</span> <span class="nx">file</span><span class="p">,</span> <span class="nf">(err, res) -&gt;</span> 
-          <span class="nx">results</span><span class="p">.</span><span class="nx">push</span> <span class="nx">name</span> <span class="k">for</span> <span class="nx">name</span> <span class="k">in</span> <span class="nx">res</span>
-          <span class="nx">done</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="nx">unless</span> <span class="o">--</span><span class="nx">pending</span>
-      <span class="k">else</span>
-        <span class="nx">results</span><span class="p">.</span><span class="nx">push</span> <span class="nx">file</span>
-        <span class="nx">done</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">results</span><span class="p">)</span> <span class="nx">unless</span> <span class="o">--</span><span class="nx">pending</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h2><em>log</em></h2>
+<h1>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h1>
 
-<p><strong>given</strong> string as a message
-<strong>and</strong> string as a color
-<strong>and</strong> optional string as an explaination
-<strong>then</strong> builds a statement and logs to console.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">log = </span><span class="nf">(message, color, explanation) -&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span> <span class="o">+</span> <span class="nx">message</span> <span class="o">+</span> <span class="nx">reset</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">explanation</span> <span class="o">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h2><em>launch</em></h2>
+<div class="highlight highlight-bash"><pre><span class="c"># In your project directory...</span>
+curl https://raw.github.com/twilson63/cakefile-template/master/Cakefile &gt;&gt; Cakefile
+<span class="c">## If that does not work... try</span>
+curl https://raw.githubusercontent.com/twilson63/cakefile-template/master/Cakefile &gt;&gt; Cakefile
 
-<p><strong>given</strong> string as a cmd
-<strong>and</strong> optional array and option flags
-<strong>and</strong> optional callback
-<strong>then</strong> spawn cmd with options
-<strong>and</strong> pipe to process stdout and stderr respectively
-<strong>and</strong> on child process exit emit callback if set and status is 0</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">launch = </span><span class="nf">(cmd, options=[], callback) -&gt;</span>
-  <span class="nv">app = </span><span class="nx">spawn</span> <span class="nx">cmd</span><span class="p">,</span> <span class="nx">options</span>
-  <span class="nx">app</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">stdout</span><span class="p">)</span>
-  <span class="nx">app</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">stderr</span><span class="p">)</span>
-  <span class="nx">app</span><span class="p">.</span><span class="kc">on</span> <span class="s1">&#39;exit&#39;</span><span class="p">,</span> <span class="nf">(status) -&gt;</span> <span class="nx">callback</span><span class="o">?</span><span class="p">()</span> <span class="k">if</span> <span class="nx">status</span> <span class="o">is</span> <span class="mi">0</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h2><em>build</em></h2>
+</pre></div>
 
-<p><strong>given</strong> optional boolean as watch
-<strong>and</strong> optional function as callback
-<strong>then</strong> invoke launch passing coffee command
-<strong>and</strong> defaulted options to compile src to lib</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">build = </span><span class="nf">(watch, callback) -&gt;</span>
-  <span class="k">if</span> <span class="k">typeof</span> <span class="nx">watch</span> <span class="o">is</span> <span class="s1">&#39;function&#39;</span>
-    <span class="nv">callback = </span><span class="nx">watch</span>
-    <span class="nv">watch = </span><span class="kc">false</span>
+<h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
 
-  <span class="nv">options = </span><span class="p">[</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;lib&#39;</span><span class="p">,</span> <span class="s1">&#39;src&#39;</span><span class="p">]</span>
-  <span class="nx">options</span><span class="p">.</span><span class="nx">unshift</span> <span class="s1">&#39;-w&#39;</span> <span class="k">if</span> <span class="nx">watch</span>
-  <span class="nx">launch</span> <span class="s1">&#39;coffee&#39;</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">callback</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h2><em>mocha</em></h2>
+<h2>
+<a name="compiling" class="anchor" href="#compiling"><span class="octicon octicon-link"></span></a>Compiling</h2>
 
-<p><strong>given</strong> optional array of option flags
-<strong>and</strong> optional function as callback
-<strong>then</strong> invoke launch passing mocha command</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">mocha = </span><span class="nf">(options, callback) -&gt;</span>
-  <span class="k">if</span> <span class="k">typeof</span> <span class="nx">options</span> <span class="o">is</span> <span class="s1">&#39;function&#39;</span>
-    <span class="nv">callback = </span><span class="nx">options</span> 
-    <span class="nv">options = </span><span class="p">[]</span>
+<p>Put all of your coffee-script in the src folder, it will compile all coffee-script
+in your lib folder, using the build command.</p>
+
+<div class="highlight highlight-bash"><pre>cake build
+</pre></div>
+
+<h2>
+<a name="watching" class="anchor" href="#watching"><span class="octicon octicon-link"></span></a>Watching</h2>
+
+<p>If you want to compile as you write your code, invoke the watch command.</p>
+
+<div class="highlight highlight-bash"><pre>cake watch
+</pre></div>
+
+<h2>
+<a name="testing" class="anchor" href="#testing"><span class="octicon octicon-link"></span></a>Testing</h2>
+
+<p>If you want to run your tests, assuming you are using mocha.</p>
+
+<div class="highlight highlight-bash"><pre>cake <span class="nb">test</span>
+</pre></div>
+
+<h2>
+<a name="documenting" class="anchor" href="#documenting"><span class="octicon octicon-link"></span></a>Documenting</h2>
+
+<div class="highlight highlight-bash"><pre>cake docs
+</pre></div>
+
+<h2>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>Options</h2>
+
+<p>If you want to generate HTML5 maps when compiling (watching), add 'm' before <code>compile</code> or <code>watch</code>:</p>
+
+<div class="highlight highlight-bash"><pre>cake -m compile
+</pre></div>
+
+<p><code>clean</code> will also take care of mapping files. </p>
+
+<p>More information about mapping can be found on <a href="http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/">HTML5rocks</a> or <a href="http://coffeescript.org/#source-maps">Coffeescript.org</a>.</p>
+
+<p>Have Fun! </p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/twilson63">twilson63</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     
-  <span class="nx">launch</span> <span class="s1">&#39;mocha&#39;</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">callback</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h2><em>docco</em></h2>
-
-<p><strong>given</strong> optional function as callback
-<strong>then</strong> invoke launch passing docco command</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">docco = </span><span class="nf">(callback) -&gt;</span>
-  <span class="nx">walk</span> <span class="s1">&#39;src&#39;</span><span class="p">,</span> <span class="nf">(err, files) -&gt;</span> <span class="nx">launch</span> <span class="s1">&#39;docco&#39;</span><span class="p">,</span> <span class="nx">files</span><span class="p">,</span> <span class="nx">callback</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Cakefile Tasks</p>
-
-<h2><em>docs</em></h2>
-
-<p>Generate Annotated Documentation</p>
-
-<p><small>Usage</small></p>
-
-<p><code>
-cake docs
-</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">task</span> <span class="s1">&#39;docs&#39;</span><span class="p">,</span> <span class="s1">&#39;generate documentation&#39;</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="nx">docco</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <h2><em>build</em></h2>
-
-<p>Builds Source</p>
-
-<p><small>Usage</small></p>
-
-<p><code>
-cake build
-</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">task</span> <span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="s1">&#39;compile source&#39;</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="nx">build</span> <span class="o">-&gt;</span> <span class="nx">log</span> <span class="s2">&quot;:)&quot;</span><span class="p">,</span> <span class="nx">green</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <h2><em>watch</em></h2>
-
-<p>Builds your source whenever it changes</p>
-
-<p><small>Usage</small></p>
-
-<p><code>
-cake watch
-</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">task</span> <span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="s1">&#39;compile and watch&#39;</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="nx">build</span> <span class="kc">true</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="nx">log</span> <span class="s2">&quot;:-)&quot;</span><span class="p">,</span> <span class="nx">green</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <h2><em>test</em></h2>
-
-<p>Runs your test suite.</p>
-
-<p><small>Usage</small></p>
-
-<p><code>
-cake test
-</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">task</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;run tests&#39;</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="nx">build</span> <span class="o">-&gt;</span> <span class="nx">mocha</span> <span class="o">-&gt;</span> <span class="nx">log</span> <span class="s2">&quot;:)&quot;</span><span class="p">,</span> <span class="nx">green</span>
-
-</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
+  </body>
+</html>
