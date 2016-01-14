@@ -144,9 +144,7 @@ log = (message, color, explanation) -> console.log color + message + reset + ' '
 # **and** on child process exit emit callback if set and status is 0
 launch = (cmd, options=[], callback) ->
   cmd = which(cmd) if which
-  app = spawn cmd, options
-  app.stdout.pipe(process.stdout)
-  app.stderr.pipe(process.stderr)
+  app = spawn(cmd, options, { stdio: [0, 0, 0] })
   app.on 'exit', (status) ->
     if status is 0
       callback()
